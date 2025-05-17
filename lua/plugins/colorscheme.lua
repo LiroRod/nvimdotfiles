@@ -3,7 +3,7 @@ return {
   {
     "datsfilipe/vesper.nvim",
     opts = {
-      transparent_mode = true,
+      transparent = true,
     },
   },
 
