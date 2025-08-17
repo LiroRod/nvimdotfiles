@@ -24,7 +24,6 @@ return {
       require("vesper").setup({
         transparent = true,
       })
-      require("vesper").load()
     end,
   },
 
