@@ -1,0 +1,11 @@
+{
+  "name": "bnp-snippets",
+  "contributes": {
+    "snippets": [
+      {
+        "languages": "typescript",
+        "path": "./typescript.json"
+      }
+    ]
+  }
+}

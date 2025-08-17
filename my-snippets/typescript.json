@@ -1,0 +1,80 @@
+{
+  "bnpdto": {
+    "prefix": "bnpdto",
+    "body": [
+      "export interface I${1}DTO {",
+      "    ${3}: ${4};",
+      "}",
+      "",
+      "export type I${1}Response = {};"
+    ]
+  },
+  "bnpusecase": {
+    "prefix": "bnpusecase",
+    "body": [
+      "import { AppError } from 'responses';",
+      "",
+      "import { I${1/(.*)/${1:/capitalize}/}Repository } from '@modules/${1/(.*)/${1:/camelcase}/}/repository';",
+      "",
+      "import { I${1/(.*)/${1:/capitalize}/}${2/(.*)/${1:/capitalize}/}DTO, I${1/(.*)/${1:/capitalize}/}${2/(.*)/${1:/capitalize}/}Response } from './${1/(.*)/${1:/camelcase}/}.${2/(.*)/${1:/camelcase}/}.DTO';",
+      "",
+      "/**",
+      " * ${1/(.*)/${1:/capitalize}/}${2/(.*)/${1:/capitalize}/}UseCase Description",
+      " */",
+      "export class ${1/(.*)/${1:/capitalize}/}${2/(.*)/${1:/capitalize}/}UseCase {",
+      "    /**",
+      "     * Constructor for ${1/(.*)/${1:/capitalize}/}${2/(.*)/${1:/capitalize}/}UseCase",
+      "     * @param ${1/(.*)/${1:/camelcase}/}Repository - Inject a {@link I${1/(.*)/${1:/capitalize}/}Repository} implementation",
+      "     */",
+      "    constructor(private ${1/(.*)/${1:/camelcase}/}Repository: I${1/(.*)/${1:/capitalize}/}Repository) {}",
+      "",
+      "    /**",
+      "     * @param dto - {@link I${1/(.*)/${1:/capitalize}/}${2/(.*)/${1:/capitalize}/}DTO}",
+      "     * @returns - {@link I${1/(.*)/${1:/capitalize}/}${2/(.*)/${1:/capitalize}/}Response}",
+      "     */",
+      "    async exec(dto: I${1/(.*)/${1:/capitalize}/}${2/(.*)/${1:/capitalize}/}DTO): Promise<I${1/(.*)/${1:/capitalize}/}${2/(.*)/${1:/capitalize}/}Response> {",
+      "        if (dto == null) {",
+      "            throw new AppError({",
+      "                message: 'The \"unknown\" parameter was not provided.',",
+      "                ptMessage: 'O parâmetro \"desconhecido\" não foi fornecido.',",
+      "            });",
+      "        }",
+      "",
+      "        return dto;",
+      "    }",
+      "}",
+      "${3}"
+    ]
+  },
+  "bnpcontroller": {
+    "prefix": "bnpcontroller",
+    "body": [
+      "import { ${1/(.*)/${1:/capitalize}/}${2/(.*)/${1:/capitalize}/}UseCase, I${1/(.*)/${1:/capitalize}/}${2/(.*)/${1:/capitalize}/}DTO } from 'proac-expresso-logic/';",
+      "import { failureResponse, forbiddenResponse, successResponse } from 'responses';",
+      "import { Request, Response } from 'express';",
+      "",
+      "",
+      "export class ${1/(.*)/${1:/capitalize}/}${2/(.*)/${1:/capitalize}/}Controller {",
+      "  constructor(private ${1/(.*)/${1:/camelcase}/}${2/(.*)/${1:/capitalize}/}UseCase: ${1/(.*)/${1:/capitalize}/}${2/(.*)/${1:/capitalize}/}UseCase) {}",
+      "",
+      "  async handle(req: Request, res: Response): Promise<Response> {",
+      "    try {",
+      "      if (cannotDoThis('read', '', req)) return forbiddenResponse({ res });",
+      "",
+      "      const dto = req.body as I${1/(.*)/${1:/capitalize}/}${2/(.*)/${1:/capitalize}/}DTO;",
+      "",
+      "      const result = await this.${1/(.*)/${1:/camelcase}/}${2/(.*)/${1:/capitalize}/}UseCase.exec(dto);",
+      "",
+      "      return successResponse({ message: 'XXX', res, DATA: result });",
+      "    } catch (error: any) {",
+      "      return failureResponse({",
+      "        message: error?.message ?? 'Unexpected error',",
+      "        ptMessage: error?.ptMessage ?? 'Erro inesperado',",
+      "        res,",
+      "      });",
+      "    }",
+      "  }",
+      "}"
+    ]
+  }
+}
